@@ -9,7 +9,7 @@ from src.dashboard import display_dashboard
 from queries.aggregator_query import aggregate_business_info
 from src.export_report import create_pdf_report
 
-#api_key = st.secrets["api_key"]
+api_key = st.secrets["api_key"]
 
 @st.cache_data
 def cached_get_place_id(business_name, latitude, longitude, api_key):
