@@ -87,11 +87,16 @@ def display_dashboard(business_info, latitude, longitude, competing_businesses):
      # Create a DataFrame for the map
     map_data = pd.DataFrame({'latitude': [latitude], 'longitude': [longitude]})
     
-    # Add your business to the map_data DataFrame
-    map_data.loc[0] = [latitude, longitude]
-    
     # Add competing businesses to the map_data DataFrame
     map_data = pd.concat([map_data, comp_df[['latitude', 'longitude']].reset_index(drop=True)])
+    map_data.reset_index(drop=True, inplace=True)
+
+    # Add the "color" column to the map_data DataFrame
+    colors = [(250, 217, 8, 220)] * len(map_data)
+    map_data['color'] = colors
+
+    # Assign green color to the first business
+    map_data.at[0, 'color'] = (1, 249, 63, 220)
 
     # Print the DataFrame before creating the map
     #st.subheader("Map Data")
@@ -99,6 +104,9 @@ def display_dashboard(business_info, latitude, longitude, competing_businesses):
 
     # Display the map
     st.subheader("Map")
+
     st.map(map_data,
     latitude='latitude',
-    longitude='longitude')
+    longitude='longitude',
+    size = 10.0,
+    color = 'color')
