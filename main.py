@@ -97,14 +97,15 @@ def main():
            
         except Exception as e:
             st.error(f'Error Main: {e}')
-    if st.button("Export Report"):
-        competing_businesses = cached_search_competing_businesses(api_key, business_type, latitude, longitude, radius)
-        report_file_path = create_pdf_report(business_info, competing_businesses)
-        st.download_button(
-            label="Download Report",
-            data=open(report_file_path, "rb"),
-            file_name="competition_assessment_report.pdf"
-        )
+            
+        if st.button("Export Report"):
+            competing_businesses = cached_search_competing_businesses(api_key, business_type, latitude, longitude, radius)
+            report_file_path = create_pdf_report(business_info, competing_businesses)
+            st.download_button(
+                label="Download Report",
+                data=open(report_file_path, "rb"),
+                file_name="competition_assessment_report.pdf"
+            )
 
 
 if __name__ == "__main__":
