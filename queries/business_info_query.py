@@ -13,6 +13,8 @@ def get_business_info(place_id, api_key):
             'type': result.get('types')[0] if result.get('types') else None,
             'score': result.get('rating'),
             'number_of_reviews': result.get('user_ratings_total'),
+            'price_level': result.get('price_level'),
+            'vicinity': result.get('vicinity'),
             'comments': [review['text'] for review in result.get('reviews', [])[:20]],
             'geometry': result.get('geometry'),
             'latitude': result['geometry']['location']['lat'],
