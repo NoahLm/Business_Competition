@@ -8,6 +8,9 @@ from queries.competing_businesses_query import search_competing_businesses
 from src.dashboard import display_dashboard
 from queries.aggregator_query import aggregate_business_info
 from src.export_report import create_pdf_report
+from PIL import Image
+
+st.set_page_config(page_title="Surge Price Prediction App", page_icon = "🏆", layout="wide")
 
 api_key = st.secrets["api_key"]
 
@@ -27,6 +30,12 @@ def cached_search_competing_businesses(api_key, business_type, latitude, longitu
 def cached_display_dashboard(business_info, latitude, longitude, competing_businesses):
     return display_dashboard(business_info, latitude, longitude, competing_businesses)
 
+hide_default_format = """
+       <style>
+       footer {visibility: hidden;}
+       </style>
+       """
+st.markdown(hide_default_format, unsafe_allow_html=True)
 
 def main():
 
@@ -37,15 +46,15 @@ def main():
     )
     
     if selected_box == "Business Information":
-        st.title('Business Competition Assessor')
-        st.header("Business Information")
+        st.title('🏪Business Competition Assessor🏆')
+        st.header("Business Information📄")
         business_name, latitude, longitude = get_user_input()
         
         try:
             place_id = cached_get_place_id(business_name, latitude, longitude, api_key)
             st.write(f'Place ID: {place_id}')
         except Exception as e:
-            st.subheader('Please submit all the necessary business information.')
+            st.subheader('Please submit all the necessary information.')
         
         try:
             business_info = cached_get_business_info(place_id, api_key)
@@ -76,8 +85,8 @@ def main():
             st.write(f'')
 
     elif selected_box == "Competition Assessment":
-        st.title('Business Competition Assessor')
-        st.header("Competition Assessment")
+        st.title('🏪Business Competition Assessor🏆')
+        st.header("Competition Assessment⚔️")
         business_name, latitude, longitude = get_user_input()
         business_type, radius = get_competition_params()
         st.write(f'Type of Business: {business_type}')
@@ -91,13 +100,9 @@ def main():
             
             business_data = aggregate_business_info(api_key, competing_businesses)
             display_dashboard(business_info, latitude, longitude, business_data)
-
-            #Camino Real Mérida
-            #21.0374
-            #-89.6016
            
         except Exception as e:
-            st.subheader('Please submit all the necessary business information.')
+            st.subheader('Please submit all the necessary information.')
 
         if st.button("Export Report"):
             competing_businesses = cached_search_competing_businesses(api_key, business_type, latitude, longitude, radius)
