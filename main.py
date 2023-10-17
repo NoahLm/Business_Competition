@@ -29,6 +29,7 @@ def cached_display_dashboard(business_info, latitude, longitude, competing_busin
 
 
 def main():
+
     st.sidebar.title("Navigation")
     selected_box = st.sidebar.radio(
         "Choose an option",
@@ -36,16 +37,15 @@ def main():
     )
     
     if selected_box == "Business Information":
+        st.title('Business Competition Assessor')
         st.header("Business Information")
         business_name, latitude, longitude = get_user_input()
         
-        # Assuming you have your Google API Key as an environment variable
-        #api_key = st.secrets["google_api_key"]
         try:
             place_id = cached_get_place_id(business_name, latitude, longitude, api_key)
             st.write(f'Place ID: {place_id}')
         except Exception as e:
-            st.error(f'Error: {e}')
+            st.subheader('Please submit all the necessary business information.')
         
         try:
             business_info = cached_get_business_info(place_id, api_key)
@@ -73,9 +73,10 @@ def main():
                     comment_number += 1
 
         except Exception as e:
-            st.error(f'Error: {e}')
+            st.write(f'')
 
     elif selected_box == "Competition Assessment":
+        st.title('Business Competition Assessor')
         st.header("Competition Assessment")
         business_name, latitude, longitude = get_user_input()
         business_type, radius = get_competition_params()
@@ -96,8 +97,8 @@ def main():
             #-89.6016
            
         except Exception as e:
-            st.error(f'Error Main: {e}')
-            
+            st.subheader('Please submit all the necessary business information.')
+
         if st.button("Export Report"):
             competing_businesses = cached_search_competing_businesses(api_key, business_type, latitude, longitude, radius)
             report_file_path = create_pdf_report(business_info, competing_businesses)

@@ -2,7 +2,6 @@
 import streamlit as st
 
 def get_user_input():
-    st.title('Business Competition Assessor')
     st.subheader('Enter the business information:')
     
     business_name = st.text_input('Business Name:')
